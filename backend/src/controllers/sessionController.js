@@ -47,7 +47,8 @@ export async function getActiveSessions(_, res) {
       .populate("host", "name profileImage email clerkId")
       .populate("participant", "name profileImage email clerkId")
       .sort({ createdAt: -1 })
-      .limit(20);
+      .limit(20)
+      .lean();
 
     res.status(200).json({ sessions });
   } catch (error) {
@@ -66,7 +67,8 @@ export async function getMyRecentSessions(req, res) {
       $or: [{ host: userId }, { participant: userId }],
     })
       .sort({ createdAt: -1 })
-      .limit(20);
+      .limit(20)
+      .lean();
 
     res.status(200).json({ sessions });
   } catch (error) {

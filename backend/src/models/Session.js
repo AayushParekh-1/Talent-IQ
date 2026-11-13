@@ -35,6 +35,11 @@ const sessionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Compound indexes for high-throughput session list and filter queries
+sessionSchema.index({ status: 1, createdAt: -1 });
+sessionSchema.index({ host: 1, status: 1, createdAt: -1 });
+sessionSchema.index({ participant: 1, status: 1, createdAt: -1 });
+
 const Session = mongoose.model("Session", sessionSchema);
 
 export default Session;

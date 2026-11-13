@@ -264,7 +264,7 @@ Each problem ships with per-language starter code, sample inputs, expected outpu
 
 ## Testing
 
-See [`TESTING.md`](./TESTING_AND_RESUME.md) for the full testing guide (manual + automated).
+See [`TESTING.md`](./TESTING.md) for the full testing guide (manual + automated).
 
 ---
 

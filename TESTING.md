@@ -1,4 +1,4 @@
-# Testing Guide & Resume Metrics — TalentIQ
+# Testing Guide and Extracted Quantified Numbers — TalentIQ
 
 ---
 
@@ -81,39 +81,7 @@ npm test                        # Verify all tests still pass
 
 ---
 
-## Resume Bullet Points
 
-Pick based on the role. Every line is grounded in actual code and verified benchmarks — nothing inflated.
-
-### Full-stack / general
-
-- Built a **full-stack real-time interview platform** integrating 5 services (Clerk auth, Stream Video, Stream Chat, Inngest, Piston code execution) into a cohesive SPA using React 19 and Express 5
-- Designed and exposed a **RESTful API with 8 authenticated endpoints** using Clerk JWT middleware that maps tokens to MongoDB user records before each request reaches a controller
-- Implemented **event-driven user sync** via Inngest functions that listen to Clerk webhooks (`user.created`, `user.deleted`) and atomically propagate changes to both MongoDB and Stream — keeping auth decoupled from the API layer
-
-### Frontend
-
-- Engineered a **live collaborative coding workspace** featuring a Monaco editor (VS Code's engine), real-time code execution via Piston across 3 languages, and a resizable 5-panel layout using `react-resizable-panels`
-- Built a **WebRTC video + chat session interface** with Stream's React SDKs; managed WebSocket connection lifecycle and async teardown inside a custom `useStreamClient` hook to prevent memory leaks on unmount
-- Implemented a **client-side StreamVideoClient singleton** that reuses existing connections by user ID, avoiding redundant WebSocket reconnections on re-renders
-- Coordinated **multi-party session state** using TanStack Query with 5-second polling — participants auto-detect session end and are redirected without any server-push infrastructure
-
-### Backend / Performance
-
-- Designed a **full session lifecycle** (create → join → end) with server-side invariants: 2-participant cap, host-only end permission, atomic cleanup of Stream video call and chat channel on session close
-- Optimized MongoDB query performance on a 50,000-document dataset by designing 3 compound indexes and applying lean query hydration, **reducing p95 API latency by 83–95%** and **increasing throughput from 333 to 4,459 req/s (up to 17× improvement)**
-- Eliminated full collection scans, **cutting docs examined from 50,000 to 20 per query (99.96% reduction)** and reducing query execution time from 16ms to 1ms
-- Built an automated benchmarking pipeline (seed script, autocannon load harness, explain analyzer, comparison reporter) for reproducible performance validation
-
----
-
-## Copy-Paste Resume Line
-
-> **TalentIQ** — Full-Stack Technical Interview Platform | React 19, Node.js, MongoDB, Stream, Clerk, Inngest
->
-> Built a real-time collaborative interview platform integrating 5 services; features a Monaco-based code editor with live execution across 3 languages, WebRTC video calls, and session-scoped chat in a single resizable workspace. Optimized MongoDB query layer with compound indexes and lean queries, achieving **5–17× throughput improvement** and **83–95% p95 latency reduction** on 50K sessions. Maintained **26 automated tests (100% pass rate)** across backend (Vitest + Supertest) and frontend (RTL).
-
----
 
 ## Testing Guide
 
@@ -472,47 +440,16 @@ Coverage HTML report is written to `frontend/coverage/index.html`.
 ```bash
 cd frontend && npm run lint
 ```
-
----
-
-### 5. Priority Edge Cases to Cover (checklist)
-
-#### Backend
-- [x] `createSession` — missing `problem` → `400`
-- [x] `createSession` — missing `difficulty` → `400`
-- [x] `joinSession` — session not found → `404`
-- [x] `joinSession` — session completed → `400`
-- [x] `joinSession` — host joins own session → `400`
-- [x] `joinSession` — session full → `409`
-- [x] `endSession` — not found → `404`
-- [x] `endSession` — non-host → `403`
-- [x] `endSession` — already completed → `400`
-- [ ] `protectRoute` — no token → `401` *(add after mocking Clerk requireAuth to pass-through)*
-- [ ] `getActiveSessions` — returns `{ sessions: [] }` shape → `200`
-
-#### Frontend
-- [x] `executeCode` — unsupported language → `success: false`
-- [x] `executeCode` — successful run → `success: true` with output
-- [x] `executeCode` — stderr present → `success: false`
-- [x] `executeCode` — HTTP error → `success: false`
-- [x] `executeCode` — network failure → `success: false`
-- [x] `CodeEditorPanel` — renders Run button
-- [x] `CodeEditorPanel` — disables during run
-- [x] `CodeEditorPanel` — calls onRunCode on click
-- [x] `CodeEditorPanel` — shows all 3 language options
-- [ ] `OutputPanel` — shows error style on `success: false`
-- [ ] `OutputPanel` — shows success style on `success: true`
-
 ---
 
 ## Verified Achievements Summary
 
-| Achievement | Verified Value | Resume Phrasing |
-|---|---|---|
-| Test coverage | 100% Stmts, 100% Funcs, 86.4% Branch | "Achieved 100% statement and function coverage across core frontend modules" |
-| Test count | 26 (13 backend + 13 frontend) | "Wrote 26 automated tests covering session lifecycle edge cases and UI components" |
-| Test stack | Vitest + Supertest + RTL | "Implemented end-to-end testing strategy across Express API and React UI" |
-| Throughput improvement | 5.2–17× (333 → 4,459 req/s) | "Improved API throughput 5–17× via compound indexes and lean queries" |
-| Latency reduction | p95 down 83–95% (591ms → 32ms) | "Reduced p95 API latency by 83–95% on 50K-record dataset" |
-| Query optimization | 50,000 → 20 docs examined (99.96%) | "Eliminated collection scans, cutting docs examined by 99.96%" |
+| Achievement | Verified Value |
+|---|---|
+| Test coverage | 100% Stmts, 100% Funcs, 86.4% Branch | 
+| Test count | 26 (13 backend + 13 frontend) |
+| Test stack | Vitest + Supertest + RTL |
+| Throughput improvement | 5.2–17× (333 → 4,459 req/s) |
+| Latency reduction | p95 down 83–95% (591ms → 32ms) |
+| Query optimization | 50,000 → 20 docs examined (99.96%) |
 
